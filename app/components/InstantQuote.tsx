@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Quote, Venue } from "@/lib/types";
+import BookerVerification from "./BookerVerification";
 
 type Props = {
   venue: Venue;
@@ -14,6 +15,7 @@ const eur = (n: number) => `€${n.toLocaleString("nl-NL", { minimumFractionDigi
 export default function InstantQuote({ venue, quote }: Props) {
   const [reserving, setReserving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showBooker, setShowBooker] = useState(false);
 
   const reserve = async () => {
     setError(null);
@@ -93,14 +95,23 @@ export default function InstantQuote({ venue, quote }: Props) {
         is settled with the venue owner directly.
       </p>
 
-      <button
-        type="button"
-        onClick={reserve}
-        disabled={reserving}
-        className="btn btn-ochre mt-6 w-full"
-      >
-        {reserving ? "Opening Mollie…" : `Reserve — pay ${eur(quote.reservation_fee)}`}
-      </button>
+      {showBooker ? (
+        <BookerVerification
+          reservationFeeLabel={eur(quote.reservation_fee)}
+          paying={reserving}
+          onConfirm={() => {
+            reserve();
+          }}
+        />
+      ) : (
+        <button
+          type="button"
+          onClick={() => setShowBooker(true)}
+          className="btn btn-ochre mt-6 w-full"
+        >
+          {`Reserve — pay ${eur(quote.reservation_fee)}`}
+        </button>
+      )}
 
       {error && <p className="mt-3 text-sm text-ochreDeep">{error}</p>}
     </aside>

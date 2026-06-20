@@ -5,7 +5,7 @@ the contact-form-and-wait sites it replaces. Describe your shoot or event in pla
 words, get a real itemised quote in seconds, and reserve the space live by paying a
 reservation fee via Mollie (test mode).
 
-Single page, no auth, no database. Next.js App Router + Tailwind + Gemini + Mollie.
+Single page, no auth, no database. Next.js App Router + Tailwind + Gemini + Mollie + Cala (booker verification).
 
 ## Running locally
 
@@ -23,6 +23,7 @@ Open <http://localhost:3000>.
 | ---------------- | ------------- | ----------------------------- |
 | `GEMINI_API_KEY` | server-only   | `AIza…` (from Google AI Studio) |
 | `MOLLIE_API_KEY` | server-only   | `test_…` (use **test mode**)  |
+| `CALA_API_KEY`   | server-only   | from <https://console.cala.ai> — powers the "Verified via Cala" booker check |
 | `BASE_URL`       | server        | `http://localhost:3000` locally; `https://<your-site>.netlify.app` in prod |
 
 `BASE_URL` is used as the Mollie `redirectUrl`. There are no webhooks (they don't reach
@@ -38,9 +39,11 @@ app/
   api/match/route.ts     Gemini-backed match + quote (JSON mode)
   api/checkout/route.ts  creates a Mollie payment, returns checkout URL
   api/payment-status/route.ts  read-only Mollie status check
+  api/verify-booker/route.ts   Cala-backed company verification (in front of checkout)
 lib/
   gemini.ts              centralized Gemini client + JSON-mode helper w/ 1 retry
   mollie.ts              centralized Mollie client + baseUrl resolver
+  cala.ts                centralized Cala client (6s budget, 1 retry, fails to verified:false)
   venues.ts              load + rehydrate + featured-pinning helpers
   prompts.ts             match & quote prompt templates
   types.ts               shared TS types
