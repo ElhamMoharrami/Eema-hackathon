@@ -49,8 +49,14 @@ type CalaSearchResp = {
 const TOTAL_BUDGET_MS = 6000;
 
 export async function verifyCompany(company: string): Promise<CalaVerifyResult> {
-  const apiKey = process.env.CALA_API_KEY?.trim();
-  if (!apiKey || !company.trim()) return { verified: false };
+  // Defensive: strip whitespace AND any surrounding quotes (Netlify env-var paste hazard)
+  const rawKey = process.env.CALA_API_KEY ?? "";
+  const apiKey = rawKey.trim().replace(/^["']|["']$/g, "");
+  if (!apiKey) {
+    console.error("[cala] CALA_API_KEY is missing or empty at runtime");
+    return { verified: false };
+  }
+  if (!company.trim()) return { verified: false };
 
   const ac = new AbortController();
   const stop = setTimeout(() => ac.abort(), TOTAL_BUDGET_MS);
@@ -62,12 +68,22 @@ export async function verifyCompany(company: string): Promise<CalaVerifyResult> 
       ac.signal
     );
     const hit = search?.entities?.find((e) => e?.entity_type === "Company" && e.id) ?? null;
-    if (!hit?.id) return { verified: false };
+    if (!hit?.id) {
+      console.error(
+        `[cala] no Company match for "${company.trim()}" (entities returned: ${
+          search?.entities?.length ?? 0
+        })`
+      );
+      return { verified: false };
+    }
 
     let full: CalaEntityFull | null = null;
     try {
       full = await calaGet<CalaEntityFull>(`/entities/${hit.id}`, apiKey, ac.signal);
-    } catch {
+    } catch (e) {
+      console.error(
+        `[cala] retrieve failed for ${hit.id}: ${e instanceof Error ? e.message : "unknown"}`
+      );
       // retrieve is optional — fall back to search-only data
     }
 
@@ -77,7 +93,10 @@ export async function verifyCompany(company: string): Promise<CalaVerifyResult> 
       company: normaliseCompany(merged),
       raw: { search: hit, full },
     };
-  } catch {
+  } catch (e) {
+    console.error(
+      `[cala] verify failed for "${company.trim()}": ${e instanceof Error ? e.message : "unknown"}`
+    );
     return { verified: false };
   } finally {
     clearTimeout(stop);
@@ -93,7 +112,10 @@ async function calaGet<T>(path: string, apiKey: string, signal: AbortSignal): Pr
 
   const tryOnce = async (): Promise<T> => {
     const res = await fetch(url, { headers, signal, cache: "no-store" });
-    if (!res.ok) throw new Error(`cala ${res.status}`);
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(`cala ${res.status}${body ? ` — ${body.slice(0, 200)}` : ""}`);
+    }
     return (await res.json()) as T;
   };
 
