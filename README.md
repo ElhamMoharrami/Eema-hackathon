@@ -48,15 +48,3 @@ seed/venues.json         catalogue (first entry is the house pick, always pinned
 public/photos/<id>.jpg   per-venue still — missing files degrade to a monogram plate
 public/shoots/<id>.mp4   optional per-venue clip ("See your shoot here")
 ```
-
-## Deploying to Netlify
-
-1. Push this repo to GitHub.
-2. In Netlify: **Add new site → Import from Git**, pick this repo.
-3. Build settings are picked up from `netlify.toml`. The `@netlify/plugin-nextjs`
-   plugin maps App Router route handlers to Netlify Functions.
-4. Add env vars in **Site settings → Environment variables**:
-   - `GEMINI_API_KEY`
-   - `MOLLIE_API_KEY` (test mode)
-   - `BASE_URL` (the production Netlify URL, e.g. `https://eema.netlify.app`)
-5. Deploy. The same code base runs locally and on Netlify.
