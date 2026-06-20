@@ -11,7 +11,7 @@ export function gemini(): GoogleGenAI {
   return cached;
 }
 
-export const MODEL = "gemini-2.5-flash";
+export const MODEL = "gemini-3-flash-live";
 
 /**
  * Call Gemini in JSON mode and return parsed JSON.
