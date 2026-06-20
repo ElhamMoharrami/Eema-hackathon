@@ -1,0 +1,66 @@
+[
+  {
+    "id": "versailles-grand-salon",
+    "name": "Versailles Grand Salon",
+    "neighbourhood": "Versailles, France",
+    "size_m2": 450,
+    "day_rate_eur": 4500,
+    "tags": ["baroque", "ornate", "chandeliers", "historical", "grand-hall", "filming"]
+  },
+  {
+    "id": "hofburg-imperial-hall",
+    "name": "Hofburg Imperial Hall",
+    "neighbourhood": "Vienna Innere Stadt",
+    "size_m2": 320,
+    "day_rate_eur": 3200,
+    "tags": ["imperial", "rococo", "gilded", "historical", "corporate"]
+  },
+  {
+    "id": "prague-castle-ballroom",
+    "name": "Prague Castle Ballroom",
+    "neighbourhood": "Prague Castle District",
+    "size_m2": 280,
+    "day_rate_eur": 2800,
+    "tags": ["gothic", "medieval", "stone-walls", "historical", "filming"]
+  },
+  {
+    "id": "florence-pitti-palace",
+    "name": "Pitti Palace Salon",
+    "neighbourhood": "Florence Oltrarno",
+    "size_m2": 380,
+    "day_rate_eur": 3800,
+    "tags": ["renaissance", "frescoes", "luxury", "historical", "daylight"]
+  },
+  {
+    "id": "buckingham-state-room",
+    "name": "Buckingham State Room",
+    "neighbourhood": "London Westminster",
+    "size_m2": 500,
+    "day_rate_eur": 5500,
+    "tags": ["royal", "victorian", "chandeliers", "historical", "grand"]
+  },
+  {
+    "id": "schoenbrunn-mirror-hall",
+    "name": "Schönbrunn Mirror Hall",
+    "neighbourhood": "Vienna Hietzing",
+    "size_m2": 220,
+    "day_rate_eur": 2600,
+    "tags": ["rococo", "mirrors", "ornate", "historical", "filming"]
+  },
+  {
+    "id": "alhambra-court",
+    "name": "Alhambra Court of Lions",
+    "neighbourhood": "Granada, Spain",
+    "size_m2": 180,
+    "day_rate_eur": 2100,
+    "tags": ["moorish", "islamic-architecture", "historical", "garden", "daylight"]
+  },
+  {
+    "id": "neuschwanstein-great-hall",
+    "name": "Neuschwanstein Great Hall",
+    "neighbourhood": "Schwangau, Bavaria",
+    "size_m2": 250,
+    "day_rate_eur": 2900,
+    "tags": ["romantic", "neo-gothic", "fairy-tale", "historical", "high-ceilings"]
+  }
+]
